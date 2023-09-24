@@ -18,4 +18,4 @@ Python Project for DA course
 Чтобы установить проект, выполните следующие команды:
 
 ```bash
-pip install myproject
+pip install ShoppingBot
