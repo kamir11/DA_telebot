@@ -1,7 +1,7 @@
 # DA_telebot
 Python Project for DA course
 
-(logo.png)
+(logo.jpg)
 
 Простой телеграм бот, который поможет составить список покупок.
 
