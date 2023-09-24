@@ -22,12 +22,35 @@ def handle_start(message):
     show_main_menu(user_message)
 
 
+# Обработчик команды /help
+@bot.message_handler(commands=['help'])
+def handle_help(message):
+    user_id = message.from_user.id
+    help_text = """
+    Этот бот позволяет вам управлять вашим списком покупок. Вот доступные команды:
+
+    /start - начать взаимодействие с ботом
+    
+    <b>Список покупок</b> - просмотреть текущий список покупок
+    
+    <b>Добавить покупку</b> - добавить покупку в список (напишите боту в формате "Продукт, Количество")
+    
+    <b>Удалить покупку</b> - удалить покупку из списка (укажите номер строки для удаления)
+
+    Вы также можете использовать кнопки в меню для выполнения этих действий.
+
+    Для получения справки в любое время, введите /help.
+    """
+    bot.send_message(user_id, help_text, parse_mode='HTML')
+    show_main_menu(user_id)
+
+
 # Здесь главное меню с кнопками
 def show_main_menu(user_message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     button_list = types.KeyboardButton('Список покупок')
-    button_delete = types.KeyboardButton('Удалить позицию')
-    button_add = types.KeyboardButton('Добавить позицию')
+    button_delete = types.KeyboardButton('Удалить покупку')
+    button_add = types.KeyboardButton('Добавить покупку')
     markup.row(button_list)
     markup.row(button_add, button_delete)
     bot.send_message(user_message, 'Выбери действие:', reply_markup=markup)
@@ -76,15 +99,15 @@ def handle_text(message):
 
     if text == 'Список покупок':
         handle_list(message)
-    elif text == 'Удалить позицию':
+    elif text == 'Удалить покупку':
         bot.send_message(user_id, "Напиши номер строки, которую нужно удалить:")
         bot.register_next_step_handler(message, handle_delete)
-    elif text == 'Добавить позицию':
-        bot.send_message(user_id, "Напиши новую позицию для добавления в формате \"Продукт, Количество\":")
+    elif text == 'Добавить покупку':
+        bot.send_message(user_id, "Напиши новую покупку для добавления в формате \"Продукт, Количество\":")
         bot.register_next_step_handler(message, handle_add)
     else:
         bot.send_message(user_id,
-                         'Я не понимаю эту команду. Воспользуйтесь кнопками или напишите "Список покупок", "Удалить позицию" или "Добавить позицию".')
+                         'Я не понимаю эту команду. Воспользуйтесь кнопками или напишите "Список покупок", "Удалить покупку" или "Добавить покупку".')
 
 
 def handle_delete(message):
@@ -99,7 +122,7 @@ def handle_delete(message):
             string_to_delete = list(shopping_list.keys())[index_to_delete]
             del shopping_list[string_to_delete]
             save_shopping_list(user_id, shopping_list)
-            bot.send_message(user_id, f'Позиция "{string_to_delete}" удалена из списка.')
+            bot.send_message(user_id, f'Покупка "{string_to_delete}" удалена из списка.')
         else:
             bot.send_message(user_id, "Неверный номер строки для удаления.")
     except (ValueError, IndexError):
@@ -117,10 +140,10 @@ def handle_add(message):
         shopping_list = load_shopping_list(user_id)
         shopping_list[product] = quantity
         save_shopping_list(user_id, shopping_list)
-        bot.send_message(user_id, f'Позиция "{product}" в количестве {quantity} добавлена в список.')
+        bot.send_message(user_id, f'Покупка "{product}" в количестве {quantity} добавлена в список.')
     except ValueError:
         bot.send_message(user_id,
-                         'Пожалуйста, введите новую позицию в правильном формате (например, \"Продукт, Количество\")')
+                         'Пожалуйста, введите новую покупку в правильном формате (например, \"Продукт, Количество\")')
     show_main_menu(user_id)
 
 
