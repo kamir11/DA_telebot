@@ -1,4 +1,4 @@
-# Shopping bot
+# ShoppingBot
 Python Project for DA course
 
 ![Пример логотипа](logo.jpg)
