@@ -1,4 +1,4 @@
-# DA_telebot
+# Shopping bot
 Python Project for DA course
 
 ![Пример логотипа](logo.jpg)
