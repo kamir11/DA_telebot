@@ -4,10 +4,9 @@ import os
 from telebot import types
 
 bot = telebot.TeleBot('6017525957:AAFmfeNLS4mrKAaGKPLRTEdVLfz3t34atZc')
-shopping_list = {}
+# shopping_list = {}
 
 
-# Обработчик начальных команд 'start', а также создание папки для каждого пользователя с названием папки ID пользователя
 @bot.message_handler(commands=['start'])
 def handle_start(message):
     user_message = message.from_user.id
@@ -22,7 +21,6 @@ def handle_start(message):
     show_main_menu(user_message)
 
 
-# Обработчик команды /help
 @bot.message_handler(commands=['help'])
 def handle_help(message):
     user_id = message.from_user.id
@@ -45,7 +43,6 @@ def handle_help(message):
     show_main_menu(user_id)
 
 
-# Здесь главное меню с кнопками
 def show_main_menu(user_message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     button_list = types.KeyboardButton('Список покупок')
@@ -54,6 +51,7 @@ def show_main_menu(user_message):
     markup.row(button_list)
     markup.row(button_add, button_delete)
     bot.send_message(user_message, 'Выбери действие:', reply_markup=markup)
+
 
 
 def load_shopping_list(user_id):
